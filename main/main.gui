@@ -1,0 +1,122 @@
+script: "/main/main.gui_script"
+fonts { name: "default" font: "/builtins/fonts/default.font" }
+material: "/builtins/materials/gui.material"
+adjust_reference: ADJUST_REFERENCE_PARENT
+max_nodes: 64
+nodes {
+  position { x: 360 y: 640 z: 0 }
+  size { x: 720 y: 1280 z: 0 }
+  scale { x: 1 y: 1 z: 1 }
+  type: TYPE_BOX
+  id: "background"
+  pivot: PIVOT_CENTER
+  color { x: 0.035 y: 0.05 z: 0.07 w: 1 }
+}
+nodes {
+  position { x: 360 y: 1200 z: 0 }
+  size { x: 650 y: 80 z: 0 }
+  scale { x: 1.4 y: 1.4 z: 1 }
+  type: TYPE_TEXT
+  id: "title"
+  pivot: PIVOT_CENTER
+  color { x: 0.95 y: 0.95 z: 0.95 w: 1 }
+  text: "InMobi CMP"
+  font: "default"
+  line_break: true
+}
+nodes {
+  position { x: 360 y: 1090 z: 0 }
+  size { x: 640 y: 85 z: 0 }
+  scale { x: 1 y: 1 z: 1 }
+  type: TYPE_BOX
+  id: "initialize"
+  pivot: PIVOT_CENTER
+  color { x: 0.12 y: 0.22 z: 0.32 w: 1 }
+}
+nodes {
+  position { x: 360 y: 1090 z: 0 }
+  size { x: 620 y: 65 z: 0 }
+  scale { x: 1 y: 1 z: 1 }
+  type: TYPE_TEXT
+  id: "initialize_text"
+  pivot: PIVOT_CENTER
+  color { x: 1 y: 1 z: 1 w: 1 }
+  text: "Initialize"
+  font: "default"
+  line_break: true
+}
+nodes {
+  position { x: 360 y: 980 z: 0 }
+  size { x: 640 y: 85 z: 0 }
+  scale { x: 1 y: 1 z: 1 }
+  type: TYPE_BOX
+  id: "gdpr"
+  pivot: PIVOT_CENTER
+  color { x: 0.12 y: 0.22 z: 0.32 w: 1 }
+}
+nodes {
+  position { x: 360 y: 980 z: 0 }
+  size { x: 620 y: 65 z: 0 }
+  scale { x: 1 y: 1 z: 1 }
+  type: TYPE_TEXT
+  id: "gdpr_text"
+  pivot: PIVOT_CENTER
+  color { x: 1 y: 1 z: 1 w: 1 }
+  text: "GDPR privacy settings"
+  font: "default"
+  line_break: true
+}
+nodes {
+  position { x: 360 y: 870 z: 0 }
+  size { x: 640 y: 85 z: 0 }
+  scale { x: 1 y: 1 z: 1 }
+  type: TYPE_BOX
+  id: "us"
+  pivot: PIVOT_CENTER
+  color { x: 0.12 y: 0.22 z: 0.32 w: 1 }
+}
+nodes {
+  position { x: 360 y: 870 z: 0 }
+  size { x: 620 y: 65 z: 0 }
+  scale { x: 1 y: 1 z: 1 }
+  type: TYPE_TEXT
+  id: "us_text"
+  pivot: PIVOT_CENTER
+  color { x: 1 y: 1 z: 1 w: 1 }
+  text: "US privacy settings"
+  font: "default"
+  line_break: true
+}
+nodes {
+  position { x: 360 y: 760 z: 0 }
+  size { x: 640 y: 85 z: 0 }
+  scale { x: 1 y: 1 z: 1 }
+  type: TYPE_BOX
+  id: "status"
+  pivot: PIVOT_CENTER
+  color { x: 0.12 y: 0.22 z: 0.32 w: 1 }
+}
+nodes {
+  position { x: 360 y: 760 z: 0 }
+  size { x: 620 y: 65 z: 0 }
+  scale { x: 1 y: 1 z: 1 }
+  type: TYPE_TEXT
+  id: "status_text"
+  pivot: PIVOT_CENTER
+  color { x: 1 y: 1 z: 1 w: 1 }
+  text: "Read status and consent"
+  font: "default"
+  line_break: true
+}
+nodes {
+  position { x: 30 y: 670 z: 0 }
+  size { x: 920 y: 920 z: 0 }
+  scale { x: 0.7 y: 0.7 z: 1 }
+  type: TYPE_TEXT
+  id: "log"
+  pivot: PIVOT_NW
+  color { x: 0.85 y: 0.9 z: 0.95 w: 1 }
+  text: ""
+  font: "default"
+  line_break: true
+}

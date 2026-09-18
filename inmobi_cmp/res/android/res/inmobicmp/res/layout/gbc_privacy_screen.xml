@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/options_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar_container"
+        layout="@layout/toolbar_main"
+        app:layout_constraintBottom_toTopOf="@id/sv_container"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/sv_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_container"
+        app:layout_constraintBottom_toTopOf="@id/line_item"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_gbc_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_large"
+                android:background="@drawable/bg_radius_border"
+                android:padding="@dimen/spacing_large"
+                android:textColor="@color/textColor"
+                android:text="@string/gbc_description"
+                android:textSize="@dimen/medium_text_size" />
+
+            <FrameLayout
+                android:id="@+id/gbc_fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <View
+        android:id="@+id/line_item"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/colorGrey"
+        app:layout_constraintTop_toBottomOf="@id/sv_container"
+        app:layout_constraintBottom_toTopOf="@id/btn_save_and_exit"/>
+
+    <Button
+        android:id="@+id/btn_save_and_exit"
+        android:layout_width="0dp"
+        style="@style/BlueGrayButtonStyle"
+        android:layout_marginVertical="@dimen/spacing_small"
+        android:layout_marginHorizontal="@dimen/spacing_small"
+        android:text="@string/save_and_exit"
+        app:layout_constraintBottom_toTopOf="@id/powered_by_inmobi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line_item" />
+
+    <include
+        android:id="@+id/powered_by_inmobi"
+        layout="@layout/item_powered_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

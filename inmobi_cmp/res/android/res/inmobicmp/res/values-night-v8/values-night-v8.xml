@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="textColor"> #FFFFFF </color>
+    <color name="transparencyFillerBackground"> #161616 </color>
+    <style name="PrivacyButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+</resources>

@@ -1,0 +1,102 @@
+---@class CmpDemo
+---@field lines string[]
+---@field buttons table<string, function>
+
+--- Append a bounded message to the on-screen log.
+-- @param self demo state
+-- @param message diagnostic text
+---@param self CmpDemo
+---@param message string
+local function log(self, message)
+    print(message)
+    for line in message:gmatch("[^\n]+") do
+        while #line > 62 do
+            table.insert(self.lines, line:sub(1, 62))
+            line = line:sub(63)
+        end
+        table.insert(self.lines, line)
+    end
+    while #self.lines > 24 do table.remove(self.lines, 1) end
+    gui.set_text(gui.get_node("log"), table.concat(self.lines, "\n"))
+end
+
+--- Show SDK events without interpreting them as permission to request ads.
+-- @param self demo state
+-- @param event event name
+-- @param data event payload
+---@param self CmpDemo
+---@param event string
+---@param data table
+local function on_cmp_event(self, event, data)
+    log(self, event .. ": " .. json.encode(data))
+end
+
+--- Initialize the demonstration controls.
+-- @param self demo state
+---@param self CmpDemo
+function init(self)
+    if sys.get_config_string("inmobi_cmp.run_tests", "0") == "1" then
+        local ok, err = pcall(require("tests.desktop").run)
+        if not ok then print("CMP_DESKTOP_TESTS_FAILED: " .. tostring(err)) end
+        sys.exit(ok and 0 or 1)
+        return
+    end
+    msg.post(".", "acquire_input_focus")
+    self.lines = {}
+    self.buttons = {
+        initialize = function()
+            local p_code = sys.get_config_string("inmobi_cmp.p_code", "")
+            if p_code == "" then
+                log(self, "Set [inmobi_cmp] p_code and matching [android] package in a local settings file.")
+                return
+            end
+            local ok, err = inmobi_cmp.initialize({ p_code = p_code }, on_cmp_event)
+            log(self, ok and "CMP listener attached; inspect events and status." or err)
+        end,
+        gdpr = function()
+            local ok, err = inmobi_cmp.show_gdpr()
+            log(self, ok and "GDPR form requested." or err)
+        end,
+        us = function()
+            local ok, err = inmobi_cmp.show_us_regulations()
+            log(self, ok and "US regulations form requested." or err)
+        end,
+        status = function()
+            local state, err = inmobi_cmp.get_status()
+            log(self, state and json.encode(state) or err)
+            local consent, consent_err = inmobi_cmp.get_consent()
+            log(self, consent and json.encode(consent) or consent_err)
+        end,
+    }
+    if inmobi_cmp and inmobi_cmp.is_supported() then
+        log(self, "Android SDK " .. inmobi_cmp.get_sdk_version())
+        log(self, "No ad SDK is included. Loaded or closed does not mean consent.")
+        self.buttons.initialize()
+    else
+        log(self, "Android only. This desktop build provides unsupported-platform stubs.")
+    end
+end
+
+--- Release the event listener when the scene is destroyed.
+-- @param self demo state
+---@param self CmpDemo
+function final(self)
+    if inmobi_cmp then inmobi_cmp.set_listener(nil) end
+end
+
+--- Handle mouse and touch activation of demo buttons.
+-- @param self demo state
+-- @param action_id input action
+-- @param action input data
+---@param self CmpDemo
+---@param action_id hash
+---@param action table
+function on_input(self, action_id, action)
+    if action_id ~= hash("click") or not action.released then return end
+    for id, handler in pairs(self.buttons) do
+        if gui.pick_node(gui.get_node(id), action.x, action.y) then
+            handler()
+            return true
+        end
+    end
+end

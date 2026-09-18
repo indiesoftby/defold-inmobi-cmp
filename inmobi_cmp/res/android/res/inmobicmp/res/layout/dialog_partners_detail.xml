@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar_container"
+        layout="@layout/toolbar_main"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/sc_detail_container"/>
+
+    <ScrollView
+        android:id="@+id/sc_detail_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingHorizontal="@dimen/spacing_large"
+        android:paddingVertical="@dimen/spacing_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_container"
+        app:layout_constraintBottom_toTopOf="@id/powered_by_inmobi">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/spacing_medium"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_privacy_policy_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_medium"
+                android:text="@string/privacy_policy"
+                android:textColor="@color/colorBlueAccent"
+                android:textSize="@dimen/medium_text_size" />
+
+            <TextView
+                android:id="@+id/tv_leg_interest_claim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:text="@string/legitimate_interest_claim"
+                android:textColor="@color/colorBlueAccent"
+                android:textSize="@dimen/medium_text_size" />
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/medium_text_size"
+                android:layout_marginBottom="@dimen/spacing_medium"
+                android:visibility="gone"
+                tools:text="Description"
+                android:textColor="@color/textColor"
+                tools:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/tv_cookie_max_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cookie_max_age"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/medium_text_size" />
+
+            <TextView
+                android:id="@+id/tv_uses_non_cookie_access"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:text="@string/uses_non_cookie_access"
+                android:textSize="@dimen/medium_text_size" />
+
+            <TextView
+                android:id="@+id/tv_data_retention"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:textColor="@color/textColor"
+                android:text="@string/data_retention"
+                android:textSize="@dimen/medium_text_size" />
+
+            <TextView
+                android:id="@+id/tv_disclosures"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:text="@string/disclosures"
+                android:textSize="@dimen/medium_text_size"
+                android:textColor="@color/colorBlueAccent" />
+
+            <TextView
+                android:id="@+id/tv_purposes_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:text="@string/purposes"
+                android:textAllCaps="true"
+                android:textSize="@dimen/medium_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_purposes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/medium_text_size"
+                android:textColor="@color/textColor"
+                tools:text="@string/partners_legitimate_interests_example" />
+
+            <TextView
+                android:id="@+id/tv_legitimate_interests_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:text="@string/legitimate_interests"
+                android:textAllCaps="true"
+                android:textSize="@dimen/medium_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_legitimate_interests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/medium_text_size"
+                tools:text="@string/partners_legitimate_interests_example" />
+
+            <TextView
+                android:id="@+id/tv_special_purposes_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:text="@string/special_purposes"
+                android:textAllCaps="true"
+                android:textSize="@dimen/medium_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_special_purposes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/medium_text_size"
+                tools:text="@string/partners_special_features_example" />
+
+            <TextView
+                android:id="@+id/tv_features_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:text="@string/flexible_purposes"
+                android:textAllCaps="true"
+                android:textSize="@dimen/medium_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_features"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/medium_text_size"
+                tools:text="@string/partners_legitimate_interests_example" />
+
+            <TextView
+                android:id="@+id/tv_special_features_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:text="@string/flexible_purposes"
+                android:textAllCaps="true"
+                android:textSize="@dimen/medium_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_special_features"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/medium_text_size"
+                tools:text="@string/partners_legitimate_interests_example" />
+
+            <TextView
+                android:id="@+id/tv_data_declarations_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:text="@string/data_declarations"
+                android:textAllCaps="true"
+                android:textSize="@dimen/medium_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_data_declarations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/medium_text_size"
+                tools:text="@string/partners_legitimate_interests_example" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <include
+        android:id="@+id/powered_by_inmobi"
+        layout="@layout/item_powered_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

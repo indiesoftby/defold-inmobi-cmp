@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <array name="google_fonts_certs">
+        <item>@array/google_fonts_certs_dev</item>
+        <item>@array/google_fonts_certs_prod</item>
+    </array>
+    <string-array name="google_fonts_certs_dev">
+        <item>
+            MIIEqDCCA5CgAwIBAgIJANWFuGx90071MA0GCSqGSIb3DQEBBAUAMIGUMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEQMA4GA1UEChMHQW5kcm9pZDEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9pZDEiMCAGCSqGSIb3DQEJARYTYW5kcm9pZEBhbmRyb2lkLmNvbTAeFw0wODA0MTUyMzM2NTZaFw0zNTA5MDEyMzM2NTZaMIGUMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEQMA4GA1UEChMHQW5kcm9pZDEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9pZDEiMCAGCSqGSIb3DQEJARYTYW5kcm9pZEBhbmRyb2lkLmNvbTCCASAwDQYJKoZIhvcNAQEBBQADggENADCCAQgCggEBANbOLggKv+IxTdGNs8/TGFy0PTP6DHThvbbR24kT9ixcOd9W+EaBPWW+wPPKQmsHxajtWjmQwWfna8mZuSeJS48LIgAZlKkpFeVyxW0qMBujb8X8ETrWy550NaFtI6t9+u7hZeTfHwqNvacKhp1RbE6dBRGWynwMVX8XW8N1+UjFaq6GCJukT4qmpN2afb8sCjUigq0GuMwYXrFVee74bQgLHWGJwPmvmLHC69EH6kWr22ijx4OKXlSIx2xT1AsSHee70w5iDBiK4aph27yH3TxkXy9V89TDdexAcKk/cVHYNnDBapcavl7y0RiQ4biu8ymM8Ga/nmzhRKya6G0cGw8CAQOjgfwwgfkwHQYDVR0OBBYEFI0cxb6VTEM8YYY6FbBMvAPyT+CyMIHJBgNVHSMEgcEwgb6AFI0cxb6VTEM8YYY6FbBMvAPyT+CyoYGapIGXMIGUMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEQMA4GA1UEChMHQW5kcm9pZDEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9pZDEiMCAGCSqGSIb3DQEJARYTYW5kcm9pZEBhbmRyb2lkLmNvbYIJANWFuGx90071MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEEBQADggEBABnTDPEF+3iSP0wNfdIjIz1AlnrPzgAIHVvXxunW7SBrDhEglQZBbKJEk5kT0mtKoOD1JMrSu1xuTKEBahWRbqHsXclaXjoBADb0kkjVEJu/Lh5hgYZnOjvlba8Ld7HCKePCVePoTJBdI4fvugnL8TsgK05aIskyY0hKI9L8KfqfGTl1lzOv2KoWD0KWwtAWPoGChZxmQ+nBli+gwYMzM1vAkP+aayLe0a1EQimlOalO762r0GXO0ks+UeXde2Z4e+8S/pf7pITEI/tP+MxJTALw9QUWEv9lKTk+jkbqxbsh8nfBUapfKqYn0eidpwq2AzVp3juYl7//fKnaPhJD9gs=
+        </item>
+    </string-array>
+    <string-array name="google_fonts_certs_prod">
+        <item>
+            MIIEQzCCAyugAwIBAgIJAMLgh0ZkSjCNMA0GCSqGSIb3DQEBBAUAMHQxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtHb29nbGUgSW5jLjEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9pZDAeFw0wODA4MjEyMzEzMzRaFw0zNjAxMDcyMzEzMzRaMHQxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtHb29nbGUgSW5jLjEQMA4GA1UECxMHQW5kcm9pZDEQMA4GA1UEAxMHQW5kcm9pZDCCASAwDQYJKoZIhvcNAQEBBQADggENADCCAQgCggEBAKtWLgDYO6IIrgqWbxJOKdoR8qtW0I9Y4sypEwPpt1TTcvZApxsdyxMJZ2JORland2qSGT2y5b+3JKkedxiLDmpHpDsz2WCbdxgxRczfey5YZnTJ4VZbH0xqWVW/8lGmPav5xVwnIiJS6HXk+BVKZF+JcWjAsb/GEuq/eFdpuzSqeYTcfi6idkyugwfYwXFU1+5fZKUaRKYCwkkFQVfcAs1fXA5V+++FGfvjJ/CxURaSxaBvGdGDhfXE28LWuT9ozCl5xw4Yq5OGazvV24mZVSoOO0yZ31j7kYvtwYK6NeADwbSxDdJEqO4k//0zOHKrUiGYXtqw/A0LFFtqoZKFjnkCAQOjgdkwgdYwHQYDVR0OBBYEFMd9jMIhF1Ylmn/Tgt9r45jk14alMIGmBgNVHSMEgZ4wgZuAFMd9jMIhF1Ylmn/Tgt9r45jk14aloXikdjB0MQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLR29vZ2xlIEluYy4xEDAOBgNVBAsTB0FuZHJvaWQxEDAOBgNVBAMTB0FuZHJvaWSCCQDC4IdGZEowjTAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBBAUAA4IBAQBt0lLO74UwLDYKqs6Tm8/yzKkEu116FmH4rkaymUIE0P9KaMftGlMexFlaYjzmB2OxZyl6euNXEsQH8gjwyxCUKRJNexBiGcCEyj6z+a1fuHHvkiaai+KL8W1EyNmgjmyy8AW7P+LLlkR+ho5zEHatRbM/YAnqGcFh5iZBqpknHf1SKMXFh4dd239FJ1jWYfbMDMy3NS5CTMQ2XFI1MvcyUTdZPErjQfTbQe3aDQsQcafEQPD+nqActifKZ0Np0IS9L9kR/wbNvyz6ENwPiTrjV2KRkEjH78ZMcUQXg0L3BYHJ3lc69Vs5Ddf9uUGGMYldX3WfMBEmh/9iFBDAaTCK
+        </item>
+    </string-array>
+    <color name="black_bg">#303030</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBlueAccent">#35AAD8</color>
+    <color name="colorGrey">#BDBDBD</color>
+    <color name="colorLightYellow">#FDF2D5</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorYellow">#FFFF00</color>
+    <color name="defaultTextColor">#757575</color>
+    <color name="textColor"> #000000 </color>
+    <color name="toolbar_search_text_color">#61000000</color>
+    <color name="transparencyFillerBackground"> #FFFFFF </color>
+    <dimen name="btn_selected_padding">10dp</dimen>
+    <dimen name="btn_selected_radius">4dp</dimen>
+    <dimen name="button_text_size">14sp</dimen>
+    <dimen name="ccpa_consent_btn_height">36dp</dimen>
+    <dimen name="ccpa_consent_btn_width">145dp</dimen>
+    <dimen name="dialog_detail_max_height">350dp</dimen>
+    <dimen name="line_height">1dp</dimen>
+    <dimen name="margin_item">16dp</dimen>
+    <item name="match_parent" type="dimen">-1</item>
+    <dimen name="medium_text_size">16sp</dimen>
+    <dimen name="options_button_min_width">135dp</dimen>
+    <dimen name="partners_toolbar_title_text_size">20sp</dimen>
+    <dimen name="privacy_dialog_height">360dp</dimen>
+    <dimen name="publisher_logo_size">50dp</dimen>
+    <dimen name="radius_size_medium">4dp</dimen>
+    <dimen name="radius_size_small">2dp</dimen>
+    <dimen name="small_text_size">12sp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="switch_label_margin_top">40dp</dimen>
+    <dimen name="title_text_size">18sp</dimen>
+    <dimen name="toolbar_title_margin_start">32dp</dimen>
+    <item name="wrap_content" type="dimen">-2</item>
+    <string name="access_data">Access Data</string>
+    <string name="agree_to_all">Accept all</string>
+    <string name="all_partners_toolbar_title">Partners (All vendors)</string>
+    <string name="app_name">ChoiceMobile</string>
+    <string name="btn_back_content_desc">Back</string>
+    <string name="btn_back_options_content_desc">options screen back button</string>
+    <string name="btn_init_screen_text">Show Init Screen</string>
+    <string name="ccpa_consent_btn_message">Confirm</string>
+    <string name="ccpa_consent_message">I want to make a \'Do Not Sell My Personal Information\' request.</string>
+    <string name="ccpa_content_message">
+        <p>When you visit this website, we collect personal information such as IP addresses, cookie
+        identifiers and other pseudonymous identifiers. This information may be used to personalize
+        content based on your interests, run and optimize advertising campaigns tailored to you,
+        measure the performance of ads and content, and derive insights about the audiences who
+        engage with ads and content. This information may also be disclosed by us to third parties
+        on the <a href="https://www.iabprivacy.com/optout.html">IAB’s List of Downstream Participants</a>
+            that may further disclose it to other third parties.</p>\n\n
+        <p>Using personal information as described above is an integral part of how we operate our
+        website, make revenue to support our staff, and generate relevant content for our audience.
+        You can learn more about our data collection and use practices in our Privacy Policy.</p>\n\n
+        <p>If you wish to opt out of the disclosure of your personal information to third parties by us,
+        please use the below opt out and confirm your selection. Please note that after your opt out
+        request is processed, you may continue seeing interest-based ads based on personal Information
+        utilized by us or personal information disclosed to third parties prior to your opt out. You
+        may separately opt out of the further disclosure of your personal information by third parties
+            on the <a href="https://www.iabprivacy.com/optout.html">IAB’s List of Downstream Participants</a>.</p>
+    </string>
+    <string name="ccpa_privacy_title">I want to request that you ‘Do Not Sell My Personal Information’</string>
+    <string name="change_preferences">Change Preferences</string>
+    <string name="child_sensitive_purposes">Child Sensitive Purposes</string>
+    <string name="close">Close</string>
+    <string name="cmp_start_message">
+        We and our partners store and\/or access information on a device, such as cookies and process
+        personal data, such as unique identifiers and standard information sent by a device for
+        personalised ads and content, ad and content measurement, and audience insights, as well as
+        to develop and improve products, with your permission we and out partners may use precise
+        geolocation data and identification through device scanning. You may click to consent to out
+        and out partners\' processing as described above.\n\n
+        Alternatively you may access more detailed information and change your preferences before
+        consenting or to refuse consenting. Please note that some processing of your personal data
+        may not require your consent, but you have a right yo object to such processing.
+        Your preferences will apply to a group of websites.
+    </string>
+    <string name="confirm_and_close">Confirm &amp; Close</string>
+    <string name="consent_storage_method"> Shared Preferences </string>
+    <string name="cookie_max_age">Cookie Max Age: 0</string>
+    <string name="data_declarations">Data Declarations</string>
+    <string name="data_retention">Data Retention: %1$s days</string>
+    <string name="delete_data">Delete Data</string>
+    <string name="detail_description_example">
+        Cookies, device identifiers, or other information can be stored or accessed on yout device
+        for the purposes presented to you
+    </string>
+    <string name="detail_legal_description_example">
+        Vendors can:\n* Store and access information on the device such as cookies and device
+        identifiers presented to a user.
+    </string>
+    <string name="detail_legal_description_label">LEGAL DESCRIPTION</string>
+    <string name="detail_title_text_example">Store and/or access information on a device</string>
+    <string name="disagree_to_all">Disagree to all</string>
+    <string name="disclosures">Disclosures</string>
+    <string name="domain">domain: </string>
+    <string name="features">Features</string>
+    <string name="flexible_purposes">Flexible purposes</string>
+    <string name="gbc_description">Please also note that this website/app uses 1 or more Google services and may gather and store information
+        including but not limited to your visit or usage behaviour. You may click to grant or deny consent to Google
+        and its third-party tags to use your data for below specified purposes in below Google consent section.</string>
+    <string name="google_consents">Google consents</string>
+    <string name="google_partners_toolbar_title">Partners (Google vendors)</string>
+    <string name="iab_partners_toolbar_title">Partners (IAB vendors)</string>
+    <string name="leg_interest_all_partners_toolbar_title">Legitimate Interests \n(All vendors)</string>
+    <string name="leg_interest_iab_partners_toolbar_title">Legitimate Interests \n(IAB vendors)</string>
+    <string name="leg_interest_non_iab_partners_toolbar_title">Legitimate Interests \n(Non-IAB vendors)</string>
+    <string name="legitimate_interest_claim">Legitimate Interest Claim</string>
+    <string name="legitimate_interest_consent_description">You can set legitimate interest preferences
+        for the partners these partners we work with below. You can object to a specific partner by
+        switching off individual toggles below.</string>
+    <string name="legitimate_interests">Legitimate Interests</string>
+    <string name="legitimate_interests_description">Manage how your personal data is processed</string>
+    <string name="login_and_continue">Login &amp; Continue</string>
+    <string name="max_age_in_seconds">Max age in seconds: </string>
+    <string name="name">Name: </string>
+    <string name="no">No</string>
+    <string name="non_iab_partners_toolbar_title">Partners (Non-IAB vendors)</string>
+    <string name="object_to_all">Object to all</string>
+    <string name="ok"> OK </string>
+    <string name="opt_out">Opt out</string>
+    <string name="opt_out_confirmation"> Your privacy choices have been saved. If you clear your app data, your preference will be forgotten.</string>
+    <string name="opt_out_confirmation_icon"> Opt-out Confirmation Icon</string>
+    <string name="opt_out_from_all"> Opt out from all</string>
+    <string name="options_description">
+        Consent to the use of this technology and the processing of your personal data for the
+        purposes below. You can change your mind at any time.
+    </string>
+    <string name="options_partners_description">Manage consent preference for our partners</string>
+    <string name="partners">Partners</string>
+    <string name="partners_description">
+        You can set consent preferences for individual third-party partners we work with below.
+        Expand each company list item to see what purposes they use data for to help make your
+        choices. In some cases, companies may use your data without asking for your consent, based
+        on their legitimate interests. You can click on their privacy policy links for more
+        information and to object to such processing.
+    </string>
+    <string name="partners_detail_item_template">· %1$s \n</string>
+    <string name="partners_legitimate_interests_example">
+        · Select basic ads\n
+        · Create a personalised ads profile\n
+        · Select personalised ads\n
+        · Measure ad performance\n
+        · Apply market research to generate audience insights\n
+        · Develop and improve products
+    </string>
+    <string name="partners_special_features_example">
+        · Ensure security, prevent fraud, and debug\n
+        · Technically deliver ads or content
+    </string>
+    <string name="powered_by"> Powered by</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="purpose_name">Purpose name</string>
+    <string name="purposes">Purposes</string>
+    <string name="remove_objections">Remove objections</string>
+    <string name="save_and_exit">Save &amp; Exit</string>
+    <string name="sdk_use">Use: </string>
+    <string name="sdks">SDKs</string>
+    <string name="sensitive_purposes">Sensitive Purposes</string>
+    <string name="show_all_vendors">All</string>
+    <string name="show_google_vendors">Google</string>
+    <string name="show_iab_vendors">IAB</string>
+    <string name="show_non_iab_vendors">Non-IAB</string>
+    <string name="show_partners"> <u>Show Partners</u> </string>
+    <string name="special_features">Special Features</string>
+    <string name="special_purposes">Special Purposes</string>
+    <string name="stack_name">Stack name</string>
+    <string name="stack_state_none">None</string>
+    <string name="subtitle_format">%1$s: %2$s</string>
+    <string name="type">Type: </string>
+    <string name="uses_non_cookie_access">Uses non cookie access: No</string>
+    <string name="vendor_disclosure_load_error"> Error: cannot load vendor file </string>
+    <string name="we_value_your_privacy">We value your privacy</string>
+    <string name="yes">Yes</string>
+    <style name="AppTheme.BottomSheetDialogOverlay" parent="android:Theme.Material.Light.DarkActionBar">
+    </style>
+    <style name="BlueGrayButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">@dimen/options_button_min_width</item>
+        <item name="android:paddingStart">@dimen/spacing_medium</item>
+        <item name="android:paddingEnd">@dimen/spacing_medium</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/btn_selected_state</item>
+        <item name="textAllCaps">true</item>
+    </style>
+    <style name="CCPALinkTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_marginStart">@dimen/spacing_large</item>
+        <item name="android:layout_marginEnd">@dimen/spacing_large</item>
+        <item name="android:paddingTop">@dimen/spacing_small</item>
+        <item name="android:paddingBottom">@dimen/spacing_small</item>
+        <item name="android:textColor">@color/colorBlueAccent</item>
+    </style>
+    <style name="CmpActivityTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+    <style name="PrivacyButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="SheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:background">@android:color/transparent</item>
+        
+        <item name="android:theme" ns1:targetApi="Q">@style/AppTheme.BottomSheetDialogOverlay</item>
+    </style>
+    <style name="ToolbarTheme" parent="Theme.AppCompat.DayNight">
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:textColorPrimaryInverse">@android:color/white</item>
+    </style>
+</resources>

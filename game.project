@@ -1,0 +1,27 @@
+[project]
+title = InMobi CMP Example
+version = 1.0
+
+[bootstrap]
+main_collection = /main/main.collectionc
+
+[display]
+width = 720
+height = 1280
+
+[input]
+game_binding = /input/game.input_bindingc
+
+[script]
+shared_state = 1
+
+[android]
+package = com.indiesoftby.inmobicmpdemo
+minimum_sdk_version = 21
+immersive_mode = 1
+
+[library]
+include_dirs = inmobi_cmp
+
+[inmobi_cmp]
+p_code =

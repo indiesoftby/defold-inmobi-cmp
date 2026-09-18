@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dialog_detail_max_height">160dp</dimen>
+    <dimen name="line_height">1dp</dimen>
+    <dimen name="margin_item">16dp</dimen>
+    <dimen name="privacy_dialog_height">150dp</dimen>
+</resources>

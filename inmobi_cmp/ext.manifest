@@ -1,0 +1,5 @@
+name: "InMobiCmpExt"
+platforms:
+    android:
+        context:
+            aaptExtraPackages: ["com.inmobi.cmp"]

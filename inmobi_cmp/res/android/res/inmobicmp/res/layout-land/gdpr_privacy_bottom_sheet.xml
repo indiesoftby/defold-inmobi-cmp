@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/privacy_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/spacing_medium"
+    android:paddingEnd="@dimen/spacing_medium"
+    android:paddingBottom="@dimen/spacing_small">
+
+    <ImageView
+        android:id="@+id/iv_cmp_logo"
+        android:layout_width="@dimen/publisher_logo_size"
+        android:layout_height="@dimen/publisher_logo_size"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_search"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_more_options"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:maxEms="12"
+        android:padding="0dp"
+        android:layout_marginEnd="@dimen/spacing_small"
+        android:textAllCaps="false"
+        android:textSize="@dimen/button_text_size"
+        android:textColor="@color/colorBlueAccent"
+        android:textAlignment="viewEnd"
+        android:gravity="center|end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="@id/iv_cmp_logo"
+        tools:text="More Options" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:maxEms="12"
+        android:paddingHorizontal="@dimen/spacing_tiny"
+        android:paddingVertical="@dimen/spacing_small"
+        android:textSize="@dimen/title_text_size"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_cmp_logo"
+        tools:text="We value your privacy" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline"
+        app:layout_constraintGuide_percent="0.70"
+        android:orientation="vertical"/>
+
+
+    <ScrollView
+        android:id="@+id/scroll_message"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_marginBottom="@dimen/spacing_small"
+        app:layout_constraintBottom_toTopOf="@id/btn_agree"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/cmp_start_message" />
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btn_disagree"
+        style="@style/BlueGrayButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:textSize="@dimen/small_text_size"
+        app:layout_constraintBottom_toBottomOf="@id/btn_agree"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_agree"
+        app:layout_constraintTop_toTopOf="@id/btn_agree"
+        android:visibility="visible"
+        android:layout_marginEnd="@dimen/spacing_small"
+        app:layout_goneMarginEnd="0dp"
+        tools:text="Disagree" />
+
+    <Button
+        android:id="@+id/btn_agree"
+        style="@style/BlueGrayButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="@dimen/small_text_size"
+        app:layout_constraintBottom_toTopOf="@id/tv_login_and_continue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_disagree"
+        tools:visibility="visible"
+        tools:text="agree" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
+        android:text="@string/login_and_continue"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:textColor="@color/colorBlueAccent"
+        android:textAllCaps="true"
+        android:gravity="center"
+        android:id="@+id/tv_login_and_continue"
+        app:layout_constraintBottom_toTopOf="@id/powered_by_inmobi"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <include
+        android:id="@+id/powered_by_inmobi"
+        layout="@layout/item_powered_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,4 @@
-"""Reproduce the Defold Android library layout from the supplied SDK archive."""
+"""Reproduce the Defold Android library layout from the bundled SDK archive."""
 from pathlib import Path
 import hashlib
 import io

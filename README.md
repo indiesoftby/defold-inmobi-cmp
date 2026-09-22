@@ -1,41 +1,45 @@
 # InMobi CMP for Defold
 
-Android native extension for **InMobi CMP 2.4.3**, using the SDK archive supplied by the developer. Supports GDPR / TCF 2.3, Additional Consent V2 and US Regulations / GPP. No AdMob account, UMP or advertising SDK is required by this extension.
+Use **InMobi CMP on Android** to collect and read user privacy choices from your Defold application. The extension includes InMobi CMP **2.4.3** and exposes GDPR / TCF 2.3, Additional Consent V2 and US Regulations / GPP through a Lua API.
 
-## Project layout and installation
+InMobi offers the free **Essentials** tier; see the [InMobi plan overview](https://support.inmobi.com/choice/inmobi-cmp-premium/inmobi-cmp-premium) for features and optional Premium services. You need an InMobi CMP account and a registered application to configure consent forms.
 
-- `inmobi_cmp/`: reusable native extension, Android Java bridge, libraries, resources and LuaCATS definitions.
-- `main/`: runnable Defold demonstration.
-- `sdk/`: original `InMobiCMPSDKs.zip`, Android AAR, changelog, license notices and SHA-256 checksums.
-- `tools/prepare_sdk.py`: reproduces the Defold library/resource layout from the original ZIP.
+Android is the supported platform. Other platforms provide stubs so your project can still run with `is_supported()` checks. The bundled SDK requires Android API 21 or later; your Defold version may require a higher minimum.
 
-Open `game.project` in Defold. To use the extension in another project, copy the `inmobi_cmp` folder or publish this project as a Defold library dependency. The library exports only that folder. The original ZIP and demo are not bundled into consuming games. iOS is not implemented; the iOS archive is retained only inside the unmodified source ZIP.
+## Installation
 
-The Android SDK is local. Maven resolves only its support dependencies; do not also add `com.inmobi:inmobicmp` as a Gradle dependency. API 21 is the SDK minimum; the effective device minimum is also constrained by the Defold version used to build the game.
+Add this URL to **Dependencies** in your project's `game.project`, then select **Project > Fetch Libraries** in the Defold editor:
 
-## Existing InMobi account
+```text
+https://github.com/indiesoftby/defold-inmobi-cmp/archive/refs/heads/main.zip
+```
 
-Use the application already registered in the InMobi CMP portal. Set the policy URL, applicable regulations and actual mediation vendors there. Enable the **TCF storage encoding** for the Yandex integration (TCF or both TCF/GPP), not GPP-only. Enable Google Vendors / Additional Consent when needed by the selected vendors. Use the portal's standard consent UI with accept, reject and manage choices. Layout, language and theme are managed in the portal.
+For reproducible builds, replace the branch archive with an archive URL for a specific commit. The library exports only `inmobi_cmp/`; the demo and SDK source archive are not included in your application. You can also copy that directory into your project.
 
-The downloaded archive contains a generic SDK, **not your p-code or app configuration**. Find the p-code in the portal's account profile. The Android package must match the protected app's package in the portal.
+The InMobi SDK is bundled with the extension. Maven resolves its support libraries; do not add a second `com.inmobi:inmobicmp` dependency.
 
-For command-line demo builds, create ignored `local.project`:
+## Configuration
+
+Register your Android application in the [InMobi CMP portal](https://support.inmobi.com/choice/getting-started-cmp/protect-your-properties/protect-an-app). Configure its privacy policy URL, applicable regions and regulations, vendors, and consent UI. Choose the storage encodings required by the SDKs that will consume the consent signals. Layout, language and theme are managed in the portal.
+
+Set your registered Android package and account p-code in `game.project`:
 
 ```ini
 [android]
-package = YOUR_REGISTERED_ANDROID_PACKAGE
+package = com.example.myapp
 
 [inmobi_cmp]
 p_code = YOUR_P_CODE
 ```
 
-Pass `--settings local.project` to Bob (or `--settings local.project` to `tools/build.py`). For editor builds, configure those values in `game.project` locally. An empty p-code displays setup instructions instead of starting CMP. The default demo package is `com.indiesoftby.inmobicmpdemo`; change it to match the portal before live tests. Installing a demo with the same package as an existing game can conflict with its signing key: use a test device/profile or register a separate demo property.
+The package must match your registered application. Find the p-code in your InMobi account profile. It must be configured at build time and passed to Lua `initialize` with the same value. An empty p-code leaves CMP inactive.
 
-## Lua API
+## Quick start
 
-The native module is the global `inmobi_cmp`; no `require` is needed. Do not require `inmobi_cmp.api`: it is editor type metadata only. Configure `[inmobi_cmp] p_code` **at build time** in the consuming game's settings as well as passing that same value to `initialize`.
+Add this code to a script in your application. The native module is the global `inmobi_cmp`; no `require` is needed. `inmobi_cmp/api.lua` provides editor type definitions only.
 
 ```lua
+--- Handle CMP events.
 local function on_cmp_event(self, event, data)
     if event == "error" then
         print(data.code, data.message)
@@ -46,6 +50,7 @@ local function on_cmp_event(self, event, data)
     end
 end
 
+--- Attach the CMP listener when the script starts.
 function init(self)
     if inmobi_cmp.is_supported() then
         local ok, err = inmobi_cmp.initialize({
@@ -55,10 +60,15 @@ function init(self)
     end
 end
 
+--- Release the listener when the script is destroyed.
 function final(self)
     inmobi_cmp.set_listener(nil)
 end
 ```
+
+InMobi decides whether to display a form using your portal configuration, regional applicability and saved choices. Attach the listener on every launch. Use the manual form methods when the user opens privacy settings, rather than forcing a form at startup.
+
+## Lua API
 
 | Function | Return value |
 | --- | --- |
@@ -71,15 +81,15 @@ end
 | `get_consent()` | Consent snapshot or `nil, error` |
 | `get_sdk_version()` | SDK version string or `nil, error` |
 
-An internal, non-exported ContentProvider registers an Android lifecycle callback. With a configured p-code, it starts the SDK synchronously during the first Activity's `onActivityCreated`, **before `onActivityStarted`**, without replacing the game's Application class. This timing matters: InMobi 2.4.3 tracks foreground state through `onActivityStarted`; starting it only from Lua misses the first start and can delay its automatic form until a later foreground transition. SDK automatic display follows the portal's configuration and may precede Lua startup. Events and state are retained in the Java bridge for Lua to consume.
+An internal, non-exported ContentProvider registers an Android lifecycle callback. With a configured p-code, it starts the SDK synchronously during the first Activity's `onActivityCreated`, **before `onActivityStarted`**, without replacing your application's Application class. This timing matters: InMobi 2.4.3 tracks foreground state through `onActivityStarted`; starting it only from Lua misses the first start and can delay its automatic form until a later foreground transition. SDK automatic display follows the portal's configuration and may precede Lua startup. Events and state are retained in the Java bridge for Lua to consume.
 
 Lua `initialize` attaches the listener to that early-started instance and checks the p-code. The same p-code is idempotent; another p-code is rejected without replacing the existing listener. An optional leading `p-` is removed. The package is taken from the installed application, never overridden only for the consent request. A runtime-only p-code without build-time configuration returns `startup_configuration_required`; it never silently starts too late. Empty build-time configuration keeps the SDK dormant.
 
 Commands returning `true` indicate acceptance, **not consent, completed loading or guaranteed UI display**. Later failures arrive as `error` events. Forms requested before configuration is loaded return `not_ready`. Other bridge errors include `invalid_p_code`, `startup_configuration_required`, `already_initialized`, `busy`, `activity_unavailable`, `bridge_unavailable`, `java_exception` and `unsupported_platform`. SDK errors retain their uppercase enum codes and human-readable messages. A failed network/configuration load is not converted into consent; the SDK controls recovery/cache behavior. A process restart retries SDK initialization.
 
-On unsupported platforms `get_status()` returns `{ supported = false, initialized = false, loaded = false }`; other operations return `nil, "unsupported_platform"`. No consent or success is synthesized.
+On unsupported platforms `is_supported()` returns `false`, `get_status()` returns `{ supported = false, initialized = false, loaded = false }`, and all other operations return `nil, "unsupported_platform"`.
 
-## Events and data
+### Events and data
 
 The callback receives `(self, event, data)` on the **Defold game thread**, never the Java UI thread. Java events use a thread-safe queue. Detach the listener in the script's `final`; replacing/detaching it inside a callback is supported. The update loop waits for a listener before polling events, preserving early startup events until Lua attaches. Consent also remains in SDK storage. There is one listener per engine instance.
 
@@ -107,49 +117,72 @@ Android status also exposes `flow_ready`, `form_visible`, `revision` and `failed
 
 `storage` exposes only `IABTCF_*`, `IABGPP_*` and `IABUSPrivacy_String` keys with their original names and types. The extension never edits them or clears user consent. Other application preferences are not exposed. The demo logs consent for development; remove such diagnostics from production code.
 
-## Yandex Boost integration quick guide
+## Using consent with other SDKs
 
-No advertising SDK is included or initialized in this standalone project.
+Wait for the native flow to resolve, then read the applicable consent signals before initializing SDKs or requesting ads that depend on them. `loaded` alone is insufficient; `flow_ready` reports flow completion, not consent to all processing. Unknown applicability or missing consent data must not be interpreted as permission.
 
-1. **Configure regions in the InMobi portal.** In the app property's **Regulation Details → Which users you want to ask consent from?**, select the required GDPR audience (EEA, UK and Switzerland) and applicable US regions. To avoid a GDPR prompt in Belarus, exclude Belarus and do not select Worldwide. Leave GDPR in the US disabled for the separate US flow, and enable the automatic US opt-out notice trigger. Select the actual mediation vendors and enable TCF encoding (TCF or TCF/GPP, not GPP-only). See [InMobi property configuration](https://support.inmobi.com/choice/getting-started-cmp/protect-your-properties/protect-an-app).
-2. **Start CMP on every launch, for all users.** Set the build-time p-code and call `inmobi_cmp.initialize({ p_code = sys.get_config_string("inmobi_cmp.p_code", "") }, on_cmp_event)` to attach the Lua listener. The extension starts the native SDK early; InMobi decides whether to show a form using portal rules, regional applicability and saved choices. Do not call `show_gdpr()` / `show_us_regulations()` unconditionally at startup or infer geography from the device language.
-3. **Gate Boost initialization and ad loading on CMP processing.** Wait until applicability is known and any required choice has been collected or a valid saved choice established. Apply the relevant adapter signals, then initialize Boost and request ads. `loaded` alone is insufficient: it can arrive before the form opens. Missing applicability fields are unknown, not `false`; a closed form is not consent. The consuming game must implement this coordination—this extension has no universal `can_request_ads` API. Gate the game's advertising initialization and preload path.
-4. **Use the stored consent signals.** InMobi writes TCF/Additional Consent to default SharedPreferences; [Yandex reads them automatically](https://ads.yandex.com/helpcenter/ru/dev/android/tcf-2-0), so no Lua string copying is required. Check TCF/GPP support and any additional consent/opt-out API requirements for each mediated network. Do not replace vendor/purpose choices or US opt-outs with a blanket `set_user_consent(true)`.
-5. **Allow users to revisit their choice.** Connect a privacy settings button to the applicable form after CMP has loaded:
+The extension exposes consent data and leaves SDK-specific decisions to your application. Apply the required vendor, purpose and opt-out signals for each integration. Re-evaluate them after consent or region changes. There is no universal `can_request_ads` flag.
+
+### Privacy settings
+
+Provide controls to reopen the applicable consent forms after CMP has loaded. For example, a GDPR settings button can call:
 
 ```lua
 local state = inmobi_cmp.get_status()
-local cmp = state and state.cmp
-if state and state.loaded and cmp then
-    if cmp.gdpr_applies == true then
-        inmobi_cmp.show_gdpr()
-    elseif cmp.us_regulation_applies == true then
-        inmobi_cmp.show_us_regulations()
-    end
+if state and state.loaded and state.cmp and state.cmp.gdpr_applies == true then
+    local ok, err = inmobi_cmp.show_gdpr()
+    if not ok then print(err) end
 end
 ```
 
-Handle the calls' return values and subsequent callbacks, and re-evaluate adapter signals when choices or regional state change. These manual APIs do not override geography. Also provide a privacy policy link. Child-audience rules and age screening belong to the consuming application; CMP is not an age-verification system. Consent-or-pay and native theme customization are outside this initial wrapper.
+Use `show_us_regulations()` for applicable US settings. If both regulations apply, make both settings accessible. Handle return values and subsequent events; these calls do not override regional applicability. Age screening and application-specific privacy decisions belong to your application.
 
-## Build and validation
+### Yandex Ads / Boost
+
+For this integration, enable **TCF storage encoding** in the InMobi portal (TCF or TCF/GPP, not GPP-only) and configure the actual mediation vendors. Enable Additional Consent when required by those vendors.
+
+InMobi writes TCF and Additional Consent signals to Android SharedPreferences; [Yandex Ads reads these signals automatically](https://ads.yandex.com/helpcenter/ru/dev/android/tcf-2-0). Apply any additional privacy APIs required by the selected mediation adapters, including US opt-out signals, before initializing advertising or loading ads. Do not replace granular choices with a blanket `set_user_consent(true)`.
+
+Yandex Ads and its mediation adapters must be installed and configured separately. When privacy settings change, suspend new ad requests and refresh cached ads according to your advertising integration.
+
+## Demo, build and testing
+
+Open this repository's `game.project` in Defold to run the demo. It provides controls to attach the listener, open GDPR and US settings, and inspect status and consent data. Configure a registered package and p-code to test on Android. Desktop builds demonstrate the unsupported-platform API.
+
+For command-line demo builds, put your settings in an ignored `local.project` file using the configuration above, then run:
 
 ```text
-python tools/prepare_sdk.py
+python tools/build.py android --variant debug --settings local.project
+```
+
+The helper stages settings under `.cache` before invoking Bob. For editor builds, configure `game.project` locally instead.
+
+Repository layout:
+
+- `inmobi_cmp/`: native extension, bundled Android library/resources and Lua type definitions.
+- `main/`: runnable Defold demo.
+- `sdk/`: original SDK archive, Android AAR, changelog, license notices and checksums.
+- `tools/`: SDK preparation, build and test scripts.
+- `tests/`: automated tests and device test instructions.
+
+The SDK files are already prepared. Run `python tools/prepare_sdk.py` only when regenerating the library/resource layout from the archived SDK. Build and test commands:
+
+```text
+python tools/test_bootstrap.py
 python tools/build.py android --variant debug
 python tools/build.py android --variant release
 python tools/build.py windows --variant debug
+python tools/test_desktop.py
 python tools/build.py android --variant release --r8
 ```
 
-The build helper pins stable Defold 1.13.1, downloads Bob into ignored `.cache`, and builds Android ARM64 + ARMv7. It can accept `--settings local.project`. Stable 1.13.1 does not support the newer `android.r8_keep_rules` setting: ordinary release builds use D8. The explicit `--r8` check instead uses pinned Defold 1.14.0 alpha (`9ca5465caa34c4872c3dcad260fbed3ea35f5c6a`) with the built-in engine keep rules. It writes separate `android-release-r8` artifacts and does not change the production baseline. Build reports are saved under `.cache`; output bundles are under `bundles/`.
+The build helper pins Defold **1.13.1** and builds Android ARM64 and ARMv7. Ordinary release builds use D8. The separate `--r8` check uses pinned Defold **1.14.0 alpha** (`9ca5465caa34c4872c3dcad260fbed3ea35f5c6a`) with the built-in engine keep rules; stable 1.13.1 does not support that setting. Build reports are written to `.cache/` and bundles to `bundles/`.
 
-See `tests/README.md` for automated and device checks and `VALIDATION.md` for the checks actually completed. A successful APK build alone does not prove that the live consent UI works.
+See [testing](tests/README.md) for automated and device scenarios, dated results and remaining coverage.
 
-## Sources
+## References
 
 - [InMobi Android integration](https://support.inmobi.com/choice/implementing-cmp-via-code/mobile-app/android-app-implementation-sdk)
-- [Yandex TCF consent](https://ads.yandex.com/helpcenter/ru/dev/android/tcf-2-0)
 - [Defold native extensions](https://defold.com/manuals/extensions/)
-- Reference architectures: [Defold UMP](https://github.com/tocaRepo/defold-androidextension-ump), [Defold Usercentrics](https://github.com/HGPoint/def_usercentrics).
 
-The SDK distribution and its third-party notices remain in `sdk/`. No source code was copied from the reference extensions.
+The SDK distribution and its third-party notices are preserved in `sdk/`.

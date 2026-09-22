@@ -173,10 +173,9 @@ python tools/build.py android --variant debug
 python tools/build.py android --variant release
 python tools/build.py windows --variant debug
 python tools/test_desktop.py
-python tools/build.py android --variant release --r8
 ```
 
-The build helper pins Defold **1.13.1** and builds Android ARM64 and ARMv7. Ordinary release builds use D8. The separate `--r8` check uses pinned Defold **1.14.0 alpha** (`9ca5465caa34c4872c3dcad260fbed3ea35f5c6a`) with the built-in engine keep rules; stable 1.13.1 does not support that setting. Build reports are written to `.cache/` and bundles to `bundles/`.
+On every run, the build helper reads the current stable release from [Defold stable metadata](https://d.defold.com/stable/info.json) and downloads its matching Bob build tool. Bob is cached by engine SHA; release metadata is fetched again for each build. Android builds include ARM64 and ARMv7. Build reports in `.cache/` record the resolved version and SHA, and bundles are written to `bundles/`.
 
 See [testing](tests/README.md) for automated and device scenarios, dated results and remaining coverage.
 

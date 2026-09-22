@@ -10,7 +10,7 @@ The bootstrap runner also executes `CmpFlowTest` against the real GPP encoder. I
 
 After `python tools/build.py windows`, run `python tools/test_desktop.py`. It launches the bundled executable with `--config=inmobi_cmp.run_tests=1`. The demo invokes `tests.desktop` against the compiled C++ module, then exits. Success prints `CMP_DESKTOP_TESTS_PASSED` and exits with code 0. The runner checks both the marker and exit status, and terminates a stalled test after 30 seconds.
 
-Run Android debug and release builds using `tools/build.py`. Run the separate `android --variant release --r8` check for Defold's R8 rules plus extension keep rules; this requires the pinned alpha engine because stable 1.13.1 does not support the new R8 setting. Inspect the APK for both ARM ABIs, CMP activity/resources, Java bridge and SDK classes.
+Run Android debug and release builds using `tools/build.py`. The helper resolves the current stable Defold release for each run. Inspect the APK for both ARM ABIs, CMP activity/resources, Java bridge and SDK classes. Build reports in `.cache/` record the actual engine version and SHA used.
 
 ## Device checks with a configured InMobi property
 
@@ -21,7 +21,7 @@ Run Android debug and release builds using `tools/build.py`. Run the separate `a
 - Open each settings screen again; check return to the application, Back, background/foreground and repeated button taps.
 - Test offline first launch, offline relaunch, invalid p-code/property and interrupted loading. No error may manufacture consent.
 - Remove or replace a Lua listener from inside a callback; unload the GUI scene and verify late events cannot call destroyed scripts.
-- Repeat important UI and consent checks on the release APK with R8 enabled.
+- Repeat important UI and consent checks on the release APK.
 - In applications that integrate advertising, verify the required consent signals for each configured SDK before requesting ads.
 
 Uninstall/clear app data only on a dedicated test installation when a fresh-user scenario is needed. No consent-reset API is exposed in production.
@@ -38,10 +38,10 @@ For US tests, use a test device/network with US egress (for example, a VPN to th
 
 | Date | Checks completed |
 | --- | --- |
-| 2026-09-22 | Java bridge, startup and CMP lifecycle/GPP tests; Android debug builds for ARM64 and ARMv7 on Defold 1.13.1. |
-| 2026-09-19 | SDK checksums/resource matching; Java bridge/startup tests; Windows build and desktop API tests; Android debug/release builds on Defold 1.13.1; separate R8 release builds on Defold 1.14.0 alpha. |
+| 2026-09-22 | Java bridge, startup and CMP lifecycle/GPP tests; Android debug builds for ARM64 and ARMv7. |
+| 2026-09-19 | SDK checksums/resource matching; Java bridge/startup tests; Windows build and desktop API tests; Android debug/release builds; separate R8 release builds. |
 | 2026-09-19 | Android 13 debug-device checks: inactive CMP without configuration, automatic GDPR form, saving with purpose consent disabled, persistence after restart and reopening settings. US settings were not applicable for that configuration. |
 
-Stable engine: `574678c7d44be490d874fbed2d0ae6211feec4d9` (1.13.1). R8 test engine: `9ca5465caa34c4872c3dcad260fbed3ea35f5c6a` (1.14.0 alpha).
+These are historical results, not version requirements. Repeat the checks with the current stable release when validating changes.
 
 Initial release/R8 builds predate the window-focus fix. Device, release and R8 checks were not repeated for the September 22 flow-readiness changes. Host tests use Android stand-ins and do not prove live consent UI behavior. Live US forms, offline behavior, accept-all and individual vendor choices, and release/R8 UI remain unverified.

@@ -194,7 +194,7 @@ dmExtension::Result ExtensionInitialize(dmExtension::Params* params) {
 
 dmExtension::Result Update(dmExtension::Params* params) {
 #if defined(DM_PLATFORM_ANDROID)
-    if (!g_bridge) return dmExtension::RESULT_OK;
+    if (!g_bridge || !g_listener) return dmExtension::RESULT_OK;
     dmAndroid::ThreadAttacher thread;
     JNIEnv* env = thread.GetEnv();
     for (int i = 0; i < 256; ++i) {

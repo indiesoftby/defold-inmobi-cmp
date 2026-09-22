@@ -18,8 +18,21 @@ public class Context {
 }
 """,
     "android/app/Application.java": """package android.app;
-public class Application extends android.content.Context {}
+public class Application extends android.content.Context {
+    public static final Application APP = new Application();
+    public final java.util.List<ActivityLifecycleCallbacks> callbacks = new java.util.ArrayList<>();
+    public void registerActivityLifecycleCallbacks(ActivityLifecycleCallbacks cb) { callbacks.add(cb); }
+    public void unregisterActivityLifecycleCallbacks(ActivityLifecycleCallbacks cb) { callbacks.remove(cb); }
+    public interface ActivityLifecycleCallbacks {
+        void onActivityCreated(Activity a, android.os.Bundle b);
+        void onActivityStarted(Activity a); void onActivityResumed(Activity a);
+        void onActivityPaused(Activity a); void onActivityStopped(Activity a);
+        void onActivitySaveInstanceState(Activity a, android.os.Bundle b);
+        void onActivityDestroyed(Activity a);
+    }
+}
 """,
+    "android/os/Bundle.java": 'package android.os; public class Bundle extends java.util.HashMap<String,Object> {}',
     "android/app/Activity.java": """package android.app;
 public class Activity extends android.content.Context {
     public boolean isFinishing() { return false; }
@@ -57,7 +70,8 @@ def main():
     CACHE.mkdir(parents=True, exist_ok=True)
     jars = [ROOT / "inmobi_cmp/lib/android/inmobicmp.jar"]
     for path in ["com/vaadin/external/google/android-json/0.0.20131108.vaadin1/android-json-0.0.20131108.vaadin1.jar",
-                 "org/jetbrains/kotlin/kotlin-stdlib/1.8.22/kotlin-stdlib-1.8.22.jar"]:
+                 "org/jetbrains/kotlin/kotlin-stdlib/1.8.22/kotlin-stdlib-1.8.22.jar",
+                 "com/iabgpp/iabgpp-encoder/3.2.3/iabgpp-encoder-3.2.3.jar"]:
         target = CACHE / Path(path).name
         if not target.exists():
             urllib.request.urlretrieve("https://repo.maven.apache.org/maven2/" + path, target)

@@ -106,6 +106,10 @@ public class ChoiceCmp {
 }
 """,
     })
+    sources["com/inmobi/cmp/presentation/components/CmpActivity.java"] = (
+        "package com.inmobi.cmp.presentation.components; "
+        "public class CmpActivity extends android.app.Activity {}"
+    )
     paths = []
     for name, source in sources.items():
         path = cache / "src" / name
@@ -114,15 +118,18 @@ public class ChoiceCmp {
         paths.append(path)
     paths += list((ROOT / "inmobi_cmp/src/java/com/defold/inmobicmp").glob("*.java"))
     paths.append(ROOT / "tests/java/BootstrapTest.java")
+    paths.append(ROOT / "tests/java/CmpFlowTest.java")
     classes = cache / "classes"
     classes.mkdir(parents=True, exist_ok=True)
     jars = [ROOT / "inmobi_cmp/lib/android/inmobicmp.jar",
             test_bridge.CACHE / "android-json-0.0.20131108.vaadin1.jar",
-            test_bridge.CACHE / "kotlin-stdlib-1.8.22.jar"]
+            test_bridge.CACHE / "kotlin-stdlib-1.8.22.jar",
+            test_bridge.CACHE / "iabgpp-encoder-3.2.3.jar"]
     classpath = os.pathsep.join(map(str, jars))
     subprocess.run(["javac", "-encoding", "UTF-8", "--release", "8", "-cp", classpath,
                     "-d", str(classes), *map(str, paths)], check=True)
     subprocess.run(["java", "-ea", "-cp", str(classes) + os.pathsep + classpath, "BootstrapTest"], check=True)
+    subprocess.run(["java", "-ea", "-cp", str(classes) + os.pathsep + classpath, "CmpFlowTest"], check=True)
 
 
 if __name__ == "__main__":

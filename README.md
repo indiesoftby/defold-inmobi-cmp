@@ -81,7 +81,7 @@ On unsupported platforms `get_status()` returns `{ supported = false, initialize
 
 ## Events and data
 
-The callback receives `(self, event, data)` on the **Defold game thread**, never the Java UI thread. Java events use a thread-safe queue. Detach the listener in the script's `final`; replacing/detaching it inside a callback is supported. Events without a listener are discarded, while consent remains in SDK storage. There is one listener per engine instance.
+The callback receives `(self, event, data)` on the **Defold game thread**, never the Java UI thread. Java events use a thread-safe queue. Detach the listener in the script's `final`; replacing/detaching it inside a callback is supported. The update loop waits for a listener before polling events, preserving early startup events until Lua attaches. Consent also remains in SDK storage. There is one listener per engine instance.
 
 | Event | Payload |
 | --- | --- |
@@ -100,6 +100,10 @@ The callback receives `(self, event, data)` on the **Defold game thread**, never
 SDK public getter names are converted to snake_case; enum values retain SDK names. Unknown/null properties are **omitted**, never changed to `false`. Vendor/purpose IDs are **string keys**, e.g. `data.vendor.consents["123"]`. US numeric values retain the SDK encoding; they are not Lua booleans. `loaded`, `DISMISSED`, and button events do not grant permission to process data.
 
 `get_status()` contains `supported`, `initialized`, `loaded`, and optional last `cmp` (PingReturn) / `ui` (DisplayInfo). `get_consent()` contains optional `gdpr`, `non_iab`, `additional`, `us`, `google_basic`, `legacy_ccpa` model snapshots plus `storage`. Model snapshots describe the latest data available during this process; standard storage is read fresh and survives process restart. Region changes do not make previous model snapshots proof of current applicability.
+
+Android status also exposes `flow_ready`, `form_visible`, `revision` and `failed`. `flow_ready` means the native flow has resolved with no CMP activity or pending form request and no blocking SDK error; it does not grant consent. Continue checking applicability and stored signals. Native activity tracking handles missing HIDDEN callbacks, and closing a form without a choice does not by itself resolve the flow. Region changes invalidate readiness. Logo download failures remain non-blocking.
+
+`get_consent().us_privacy` summarizes only GPP sections listed in `IABGPP_GppSID`: `known` reports whether applicable data was decoded, and `opt_out` combines sale, sharing, targeted-advertising opt-outs and GPC. Missing, malformed or unsupported applicable data leaves `known=false`; do not treat that as an opt-in. The original SDK models and storage remain available.
 
 `storage` exposes only `IABTCF_*`, `IABGPP_*` and `IABUSPrivacy_String` keys with their original names and types. The extension never edits them or clears user consent. Other application preferences are not exposed. The demo logs consent for development; remove such diagnostics from production code.
 

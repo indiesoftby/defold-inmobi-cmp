@@ -1,6 +1,9 @@
 package com.defold.inmobicmp;
 
 import android.app.Activity;
+import android.app.Application;
+import android.os.Bundle;
+import com.iab.gpp.encoder.GppModel;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
@@ -37,6 +40,12 @@ public final class InMobiCmpBridge implements ChoiceCmpCallback {
     private volatile String pCode;
     private volatile String startupError;
     private boolean earlyStart;
+    private boolean flowResolved;
+    private boolean choiceReceived;
+    private int cmpActivities;
+    private int revision;
+    private boolean fatalError;
+    private Application.ActivityLifecycleCallbacks lifecycle;
     private volatile String status = "{\"supported\":true,\"initialized\":false,\"loaded\":false}";
     // Only modified on the UI thread. Serialized copies are published for the game thread.
     private final JSONObject state = new JSONObject();
@@ -49,6 +58,31 @@ public final class InMobiCmpBridge implements ChoiceCmpCallback {
         put(state, "supported", true);
         put(state, "initialized", false);
         put(state, "loaded", false);
+        lifecycle = new Application.ActivityLifecycleCallbacks() {
+            private boolean isCmp(Activity a) { return a.getClass().getName().equals("com.inmobi.cmp.presentation.components.CmpActivity"); }
+            @Override public void onActivityCreated(Activity a, Bundle b) {
+                if (!isCmp(a)) return;
+                cmpActivities++;
+                flowResolved = false;
+                choiceReceived = false;
+                publishStatus();
+            }
+            @Override public void onActivityDestroyed(Activity a) {
+                if (!isCmp(a)) return;
+                cmpActivities = Math.max(0, cmpActivities - 1);
+                uiVisible = cmpActivities > 0;
+                // A dismissal alone never establishes a choice.
+                flowResolved = choiceReceived;
+                revision++;
+                publishStatus();
+            }
+            @Override public void onActivityStarted(Activity a) {}
+            @Override public void onActivityResumed(Activity a) {}
+            @Override public void onActivityPaused(Activity a) {}
+            @Override public void onActivityStopped(Activity a) {}
+            @Override public void onActivitySaveInstanceState(Activity a, Bundle b) {}
+        };
+        activity.getApplication().registerActivityLifecycleCallbacks(lifecycle);
     }
 
     public static synchronized InMobiCmpBridge getInstance(Activity activity) {
@@ -137,6 +171,10 @@ public final class InMobiCmpBridge implements ChoiceCmpCallback {
     private void publishStatus() {
         put(state, "initialized", started);
         put(state, "loaded", loaded);
+        put(state, "flow_ready", loaded && flowResolved && cmpActivities == 0 && !fatalError && !formRequested);
+        put(state, "form_visible", cmpActivities > 0);
+        put(state, "revision", revision);
+        put(state, "failed", fatalError);
         status = state.toString();
     }
 
@@ -178,6 +216,9 @@ public final class InMobiCmpBridge implements ChoiceCmpCallback {
         if (uiVisible && !current.hasWindowFocus()) return "busy";
         formRequested = true;
         onMain(() -> {
+            flowResolved = false;
+            choiceReceived = false;
+            publishStatus();
             try {
                 if ("gdpr".equals(regulation)) ChoiceCmp.forceDisplayUI(current);
                 else ChoiceCmp.showUSRegulationScreen(current);
@@ -185,6 +226,7 @@ public final class InMobiCmpBridge implements ChoiceCmpCallback {
                 error("show_failed", e.toString());
             } finally {
                 formRequested = false;
+                publishStatus();
             }
         });
         return null;
@@ -204,6 +246,7 @@ public final class InMobiCmpBridge implements ChoiceCmpCallback {
                     put(iab, key, encode(item.getValue(), 0));
             }
             put(result, "storage", iab);
+            put(result, "us_privacy", readUsPrivacy(iab));
             return result.toString();
         } catch (RuntimeException | org.json.JSONException e) {
             error("serialization_failed", e.toString());
@@ -211,11 +254,49 @@ public final class InMobiCmpBridge implements ChoiceCmpCallback {
         }
     }
 
+    /** Decode only sections marked applicable by the CMP, never all cached sections. */
+    private JSONObject readUsPrivacy(JSONObject storage) {
+        JSONObject result = new JSONObject();
+        put(result, "known", false);
+        String encoded = storage.optString("IABGPP_HDR_GppString", "");
+        String applicable = storage.optString("IABGPP_GppSID", "");
+        if (encoded.isEmpty() || applicable.isEmpty() || applicable.equals("-1")) return result;
+        try {
+            GppModel gpp = new GppModel(encoded);
+            boolean found = false;
+            boolean optOut = false;
+            for (String part : applicable.split("[^0-9]+")) {
+                if (part.isEmpty()) continue;
+                int id = Integer.parseInt(part);
+                if (id < 7 || !gpp.hasSection(id)) return result;
+                boolean sectionFound = false;
+                for (String field : new String[]{"SaleOptOut", "SharingOptOut", "TargetedAdvertisingOptOut"}) {
+                    if (!gpp.hasField(id, field)) continue;
+                    Object value = gpp.getFieldValue(id, field);
+                    if (!(value instanceof Number)) return result;
+                    int number = ((Number)value).intValue();
+                    if (number == 0) continue; // GPP: not applicable for this field.
+                    if (number != 1 && number != 2) return result;
+                    sectionFound = true;
+                    optOut |= number == 1;
+                }
+                if (!sectionFound) return result;
+                if (gpp.hasField(id, "Gpc")) optOut |= Boolean.TRUE.equals(gpp.getFieldValue(id, "Gpc"));
+                found = true;
+            }
+            put(result, "known", found);
+            if (found) put(result, "opt_out", optOut);
+        } catch (RuntimeException ignored) { /* Unknown data keeps advertising gated. */ }
+        return result;
+    }
+
     public String poll() { return events.poll(); }
 
     public void shutdown() {
         active = false;
         events.clear();
+        Activity current = activity.get();
+        if (current != null && lifecycle != null) current.getApplication().unregisterActivityLifecycleCallbacks(lifecycle);
         activity.clear();
         handler.removeCallbacksAndMessages(null);
     }
@@ -227,6 +308,13 @@ public final class InMobiCmpBridge implements ChoiceCmpCallback {
                 put(consent, key, data);
                 consentSnapshot = consent.toString();
             }
+            if (event.equals("gdpr_consent") || event.equals("us_consent")) {
+                choiceReceived = true;
+                fatalError = false;
+                revision++;
+                if (cmpActivities == 0) flowResolved = true;
+                publishStatus();
+            }
             emit(event, data);
         });
     }
@@ -236,6 +324,9 @@ public final class InMobiCmpBridge implements ChoiceCmpCallback {
             loaded = info.getCmpLoaded();
             JSONObject data = (JSONObject) encode(info, 0);
             put(state, "cmp", data);
+            fatalError = false;
+            flowResolved = Boolean.FALSE.equals(data.opt("gdpr_applies"))
+                    && Boolean.FALSE.equals(data.opt("us_regulation_applies"));
             publishStatus();
             // Recover the SDK's persisted choice as well as later callback updates.
             if (loaded) {
@@ -252,6 +343,10 @@ public final class InMobiCmpBridge implements ChoiceCmpCallback {
             uiVisible = "VISIBLE".equals(info.getDisplayStatus().name());
             JSONObject data = (JSONObject) encode(info, 0);
             put(state, "ui", data);
+            if (uiVisible) flowResolved = false;
+            // After loading, an explicit HIDDEN decision from the SDK (unlike
+            // PingReturn.HIDDEN) settles its automatic prompt decision.
+            else if ("HIDDEN".equals(info.getDisplayStatus().name()) && cmpActivities == 0) flowResolved = true;
             publishStatus();
             emit("ui_changed", data);
         });
@@ -261,7 +356,7 @@ public final class InMobiCmpBridge implements ChoiceCmpCallback {
     @Override public void onGoogleVendorConsentGiven(ACData data) { modelEvent("additional_consent", "additional", data); }
     @Override public void onReceiveUSRegulationsConsent(USRegulationData data) { modelEvent("us_consent", "us", data); }
     @Override public void onGoogleBasicConsentChange(GoogleBasicConsents data) { modelEvent("google_basic_consent", "google_basic", data); }
-    @Override public void onUserMovedToOtherState() { onMain(() -> emit("region_changed", new JSONObject())); }
+    @Override public void onUserMovedToOtherState() { onMain(() -> { flowResolved = false; revision++; publishStatus(); emit("region_changed", new JSONObject()); }); }
     @Override public void onActionButtonClicked(ActionButton button) {
         onMain(() -> { JSONObject data = new JSONObject(); put(data, "action", button.name()); emit("action", data); });
     }
@@ -274,6 +369,11 @@ public final class InMobiCmpBridge implements ChoiceCmpCallback {
             if (value == ChoiceError.INVALID_PCODE) {
                 started = false;
                 startupError = "invalid_p_code";
+                publishStatus();
+            }
+            if (value != ChoiceError.FAILED_LOGO_DOWNLOAD) {
+                fatalError = true;
+                flowResolved = false;
                 publishStatus();
             }
             error(value.name(), value.getMessage());

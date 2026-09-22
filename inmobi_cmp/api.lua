@@ -29,6 +29,10 @@
 ---@field supported boolean
 ---@field initialized boolean Initialization accepted; not an indication of consent.
 ---@field loaded boolean SDK configuration loaded; not an indication of consent.
+---@field flow_ready? boolean Native flow resolved; check applicable consent signals separately.
+---@field form_visible? boolean A native CMP activity exists.
+---@field revision? integer Changes when choices, region or form completion change.
+---@field failed? boolean An SDK error other than a logo download failure occurred.
 ---@field cmp? InMobiCmpPing
 ---@field ui? InMobiCmpUi
 
@@ -48,7 +52,12 @@
 ---@field out_of_band table
 ---@field tcf_policy_version integer
 
+---@class InMobiUsPrivacy
+---@field known boolean Applicable GPP sections could be decoded.
+---@field opt_out? boolean Combined sale, sharing, targeted advertising and GPC opt-out.
+
 ---@class InMobiConsent
+---@field us_privacy? InMobiUsPrivacy
 ---@field storage table<string, string|number|boolean|table> Exact standard IAB preference keys; absent keys remain absent.
 ---@field gdpr? InMobiGdprData
 ---@field non_iab? table SDK non-IAB model, including non_iab_vendor_consents.
@@ -78,7 +87,7 @@ function inmobi_cmp.is_supported() end
 function inmobi_cmp.initialize(options, callback) end
 
 --- Replace or clear the listener, including from inside a callback.
--- Events polled without a listener are discarded; get_consent retains SDK state.
+-- Events are retained until a listener is attached; get_consent retains SDK state.
 -- @param function callback listener or nil
 -- @return boolean|nil accepted
 -- @return string error code on failure

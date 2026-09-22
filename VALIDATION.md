@@ -42,3 +42,11 @@ The Java host tests use Android scheduling/preferences stand-ins; they do not es
 Yandex Boost and its adapters are intentionally not installed in this standalone project. TCF/Additional Consent compatibility follows the documented storage interfaces; full mediation behavior requires a later integration test in the consuming game.
 
 The fixed debug APK was rebuilt and installed with `adb install -r`. On the same process: manually opened GDPR, saved with purpose consent off, requested US (received not applicable rather than stale busy), and opened GDPR again successfully. Evidence: `.cache/device/fixed-reopening.log` and `.png`. The GDPR form was left open for inspection.
+
+## Integration fixes backported on 2026-09-22
+
+Ported the consuming game's native flow readiness/lifecycle tracking, applicable GPP opt-out decoding and preservation of startup events until a Lua listener attaches. Updated the public Lua annotations and API documentation.
+
+- `python tools/test_bootstrap.py` passes the existing bridge and startup suites plus the imported `CmpFlowTest` lifecycle/GPP regression suite.
+- `python tools/build.py android --variant debug` passes on Defold 1.13.1 for ARM64 and ARMv7.
+- No new device, release or R8 run was performed for this backport. Host tests use lifecycle stand-ins and do not verify live consent forms.
